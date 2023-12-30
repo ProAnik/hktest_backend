@@ -74,3 +74,24 @@ Route::post('/record/update', function (Request $request) {
     $res = $request->all();
     return $res;
 });
+
+Route::get('/record/{id}', function ($id) {
+    $record = Record::find($id);
+    $data['name'] = $record->name;
+    $data['agree'] = $record->is_agreed;
+    $sector = Sector::find($record->sector_id);
+    $data['sector'] = $sector->name;
+    $parent = null;
+    if($sector->parent_id){
+        $parent = Sector::find($sector->parent_id);
+        $data['parent'] = $parent->name;
+    }
+    if($parent && $parent->parent_id)
+    {
+        $grand = Sector::find($parent->parent_id);
+        $data['grand_parent'] = $grand->name;
+    }
+    return $data;
+
+});
+
