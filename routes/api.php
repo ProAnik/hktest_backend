@@ -65,6 +65,16 @@ Route::post('/record/update', function (Request $request) {
     }
 
     $length = count($request->selection);
+    a:
+    if(!$request->selection[$length])
+    {
+        --$length;
+        if(!$request->selection[$length])
+        {
+            goto a;
+        }
+    }
+
     $record =  Record::find($request->id);
     $record->update([
         'name' => $request->name,
@@ -74,6 +84,7 @@ Route::post('/record/update', function (Request $request) {
     $res = $request->all();
     return $res;
 });
+
 
 Route::get('/record/{id}', function ($id) {
     $record = Record::find($id);
