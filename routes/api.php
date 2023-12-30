@@ -38,6 +38,15 @@ Route::post('/record/add', function (Request $request) {
     }
 
     $length = count($request->selection);
+    a:
+    if(!$request->selection[$length])
+    {
+        --$length;
+        if(!$request->selection[$length])
+        {
+            goto a;
+        }
+    }
 
     $record = Record::create([
         'name' => $request->name,
